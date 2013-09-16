@@ -1,5 +1,6 @@
 {
   open Printf
+  open Parser
 }
 
 let digit = ['0'-'9']
@@ -13,67 +14,85 @@ let multi_line_comment_start = "/*"
 let multi_line_comment_end = "*/"
 
 rule token = parse
-  | single_line_comment_start [^ '\n']* '\n' {
-      printf "single line comment\n"
+  | single_line_comment_start [^ '\n']* '\n' as comment {
+      printf "single line comment\n";
+      COMMENT (comment);
     }
   | multi_line_comment_start {
       printf "multi line comment start\n";
       comment_token "" lexbuf
     }
   | "\"" (escaped_special_charater | ("\\0" digit digit) | ("\\x" hex hex) | normal_character)* "\"" as string_literal {
-      printf "string literal: %s\n" string_literal
+      printf "string literal: %s\n" string_literal;
+      STRING_LITERAL (string_literal)
     }
   | "true" | "false" as boolean_literal {
-      printf "boolean literal: %b\n" (bool_of_string boolean_literal)
+      printf "boolean literal: %b\n" (bool_of_string boolean_literal);
+      BOOLEAN_LITERAL (bool_of_string boolean_literal);
     }
-  | '&' | '|' {
-      printf "boolean operator\n"
+  | '&' | '|' as operator {
+      printf "boolean operator\n";
+      BOOLEAN_OPERATOR (Char.escaped operator);
     }
-  | ">=" | "<=" | '>' | '<' | "!=" | "==" as relational_operator {
-      printf "relational operator: %s\n" relational_operator
+  | ">=" | "<=" | '>' | '<' | "!=" | "==" as operator {
+      printf "relational operator: %s\n" operator;
+      RELATIONAL_OPERATOR (operator);
     }
   | '+' { 
-      printf "plus\n"
+      printf "plus\n";
+      PLUS;
     }
   | '-' { 
-      printf "minus\n"
+      printf "minus\n";
+      MINUS;
     }
   | '*' {
-      printf "multiply\n"
+      printf "multiply\n";
+      MULTIPLY;
     }
   | '/' {
-      printf "divide\n"
+      printf "divide\n";
+      DIVIDE;
     }
   | '^' {
-      printf "exp\n"
+      printf "exp\n";
+      EXP;
     }
   | '!' {
-      printf "negation operator\n"
+      printf "negation operator\n";
+      NEGATION;
     }
   | '-' {
-      printf "negative operator\n"
+      printf "negative operator\n";
+      NEGATIVE;
     }
   | ['a'-'z'] (letter | digit | underscore)* as id {
       printf "id: %s\n" id;
+      ID (id);
     }
   | ['A'-'Z'] (letter | digit | underscore)* as cname {
       printf "cname: %s\n" cname;
+      CNAME (cname);
     }
   | digit+ as integer_literal {
-      printf "integer_literal: %d\n" (int_of_string integer_literal)
+      printf "integer_literal: %d\n" (int_of_string integer_literal);
+      INTEGER_LITERAL (int_of_string integer_literal);
     }
   | [' ' '\t']  { 
-      printf "white space\n"
+      printf "white space\n";
+      WHITESPACE;
     }
   | '\n'  { 
-      printf "new line\n"
+      printf "new line\n";
+      NEWLINE;
     }
   | eof     { exit 0 }
 
 and comment_token comment = parse
   | multi_line_comment_end  {
       printf "comment: %s\n" comment;
-      printf "multi line comment end\n"
+      printf "multi line comment end\n";
+      COMMENT (comment)
     }
   | _ as c {
       comment_token (comment ^ Char.escaped(c)) lexbuf
@@ -82,9 +101,9 @@ and comment_token comment = parse
 {
   let main () =
     let lexbuf = Lexing.from_channel stdin in
-      while true do
-        token lexbuf
-      done
+    while true do
+      token lexbuf
+    done
 
   let _ = Printexc.print main ()
 }
