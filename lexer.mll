@@ -22,6 +22,48 @@ rule token = parse
       printf "multi line comment start\n";
       comment_token "" lexbuf
     }
+
+  (* Omit white spaces *)
+  | [' ' '\t']  { 
+      (* printf "white space\n"; *)
+      token lexbuf;
+    }
+  | '\n'  { 
+      (* printf "new line\n"; *)
+      token lexbuf;
+    }
+    
+  | '{' {
+      printf "keyword: {\n";
+      OPEN_CURLY_BRACKET_KEYWORD;
+    }
+  | '}' {
+      printf "keyword: }\n";
+      CLOSE_CURLY_BRACKET_KEYWORD;
+    }
+  | "class" {
+      printf "keyword: class\n";
+      CLASS_KEYWORD;
+    }
+  | "void main" {
+      printf "keyword: void main\n";
+      VOID_MAIN_KEYWORD;
+    }
+  | '(' {
+      printf "keyword: (\n";
+      OPEN_BRACKET_KEYWORD;
+    }
+  | ')' {
+      printf "keyword: )\n";
+      CLOSE_BRACKET_KEYWORD;
+    }
+  | ',' {
+      printf "keyword: ,\n";
+      COMMA_KEYWORD;
+    }
+
+
+
   | "\"" (escaped_special_charater | ("\\0" digit digit) | ("\\x" hex hex) | normal_character)* "\"" as string_literal {
       printf "string literal: %s\n" string_literal;
       STRING_LITERAL (string_literal)
@@ -78,15 +120,8 @@ rule token = parse
       printf "integer_literal: %d\n" (int_of_string integer_literal);
       INTEGER_LITERAL (int_of_string integer_literal);
     }
-  | [' ' '\t']  { 
-      printf "white space\n";
-      WHITESPACE;
-    }
-  | '\n'  { 
-      printf "new line\n";
-      NEWLINE;
-    }
-  | eof     { exit 0 }
+  | _ as c { print_char '@'; print_char c; token lexbuf}
+  | eof     { printf "EOF"; EOF }
 
 and comment_token comment = parse
   | multi_line_comment_end  {
@@ -99,6 +134,7 @@ and comment_token comment = parse
     }
 
 {
+  (*
   let main () =
     let lexbuf = Lexing.from_channel stdin in
     while true do
@@ -106,4 +142,5 @@ and comment_token comment = parse
     done
 
   let _ = Printexc.print main ()
+  *)
 }
