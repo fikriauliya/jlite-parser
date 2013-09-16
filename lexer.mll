@@ -61,8 +61,63 @@ rule token = parse
       printf "keyword: ,\n";
       COMMA_KEYWORD;
     }
+  | "if" {
+      printf "keyword: if\n";
+      IF_KEYWORD;
+    }
+  | "else" {
+      printf "keyword: else\n";
+      ELSE_KEYWORD;
+    }
+  | "while" {
+      printf "keyword: while\n";
+      WHILE_KEYWORD;
+    }
+  | "readln" {
+      printf "keyword: readln\n";
+      READLN_KEYWORD;
+    }
+  | "println" {
+      printf "keyword: println\n";
+      PRINTLN_KEYWORD;
+    }
+  | "return" {
+      printf "keyword: return\n";
+      RETURN_KEYWORD;
+    }
+  | ';' {
+      printf "keyword: ;\n";
+      SEMICOLLON_KEYWORD;
+    }
+  | '=' {
+      printf "keyword: =\n";
+      ASSIGNMENT_KEYWORD; 
+    }
+  | '.' {
+      printf "keyword: .\n";
+      DOT_KEYWORD;  
+    }
 
-
+  | "||" {
+      printf "keyword: ||\n";
+      DISJUNCTION_KEYWORD;
+    }
+  | "&&" {
+      printf "keyword: &&\n";
+      CONJUCTION_KEYWORD;
+    }
+  | "this" {
+      printf "keyword: this\n";
+      THIS_KEYWORD;
+    }
+  | "new" {
+      printf "keyword: new\n";
+      NEW_KEYWORD;
+    }
+  | "NULL" {
+      printf "keyword: NULL\n";
+      NULL_KEYWORD;
+    }
 
   | "\"" (escaped_special_charater | ("\\0" digit digit) | ("\\x" hex hex) | normal_character)* "\"" as string_literal {
       printf "string literal: %s\n" string_literal;
