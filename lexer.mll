@@ -127,10 +127,6 @@ rule token = parse
       printf "boolean literal: %b\n" (bool_of_string boolean_literal);
       BOOLEAN_LITERAL (bool_of_string boolean_literal);
     }
-  | '&' | '|' as operator {
-      printf "boolean operator\n";
-      BOOLEAN_OPERATOR (Char.escaped operator);
-    }
   | ">=" | "<=" | '>' | '<' | "!=" | "==" as operator {
       printf "relational operator: %s\n" operator;
       RELATIONAL_OPERATOR (operator);
