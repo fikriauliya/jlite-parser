@@ -1,0 +1,6 @@
+class Factorial {
+  void main (Int a) {
+    println(new Fac().computeFac(a)) ;
+    return ;
+  }
+}
