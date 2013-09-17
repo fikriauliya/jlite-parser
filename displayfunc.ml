@@ -10,7 +10,7 @@
 (* Ex : BinaryExp (ComparisonOp "<=",  IntLiteral 2, Var x) *)
 (* Accesing such a type is done through the "match with" construct 
   as can be seen in the code below *)
-
+  
 open Interface
   
 (* ===================================================== *)
@@ -19,6 +19,7 @@ open Interface
 
 (* Mutable value for pretty printing and indentation *)
 (* Denotes the number of indentation tabs *)
+
 let indent = ref 0
 
 let indent_inc() : string = 
@@ -70,7 +71,7 @@ let string_of_jlite_type (e:jlite_type):string =
   | Unknown -> ""
   
 (* display a Jlite expr in postfix form *)
-let string_of_jlite_exp (e:jlite_exp):string =
+let string_of_jlite_expr (e:jlite_exp):string =
   let rec helper_func e =
   match e with
     | UnaryExp (op,arg) -> 
@@ -103,7 +104,7 @@ let string_of_jlite_stmt (s:jlite_stmt):string =
   match s with
     | IfStmt (e, stmts1, stmts2) -> 
     let ifExpr = 
-      print_tab() ^ "If(" ^ (string_of_jlite_exp e) ^")\n" in
+      print_tab() ^ "If(" ^ (string_of_jlite_expr e) ^")\n" in
     let thenBranch = 
       (string_of_indented_stmt_list "\n" helper_func stmts1) in 
     let elseExpr = 
@@ -112,27 +113,27 @@ let string_of_jlite_stmt (s:jlite_stmt):string =
       (string_of_indented_stmt_list "\n" helper_func stmts2) in 
     ifExpr ^ thenBranch ^ elseExpr ^ elseBranch
     | WhileStmt (e, stmts) -> 
-    print_tab() ^ "While("^(string_of_jlite_exp e)^") {\n" 
+    print_tab() ^ "While("^(string_of_jlite_expr e)^") {\n" 
     ^ indent_inc() ^ (string_of_list stmts helper_func  "\n") 
     ^ indent_dec() ^ "\n}"
     | ReturnStmt e ->  
-    print_tab() ^ "Return " ^ (string_of_jlite_exp e)^";"
+    print_tab() ^ "Return " ^ (string_of_jlite_expr e)^";"
   | ReturnVoidStmt ->  
     print_tab() ^ "Return;"
     | AssignStmt (id,e) ->  
     print_tab() ^ string_of_var_id id 
-    ^"="^(string_of_jlite_exp e)^";"
+    ^"="^(string_of_jlite_expr e)^";"
     | ReadStmt id -> 
     print_tab() ^ "readln(" 
     ^ string_of_var_id id ^");"
   | PrintStmt e -> 
     print_tab() ^ "println(" 
-    ^ (string_of_jlite_exp e) ^");"
+    ^ (string_of_jlite_expr e) ^");"
   | AssignFieldStmt (id,e) ->  
-    print_tab() ^ (string_of_jlite_exp id)
-    ^"="^(string_of_jlite_exp e)^";"
+    print_tab() ^ (string_of_jlite_expr id)
+    ^"="^(string_of_jlite_expr e)^";"
   | MdCallStmt (e) ->  
-    print_tab() ^ (string_of_jlite_exp e)^";"
+    print_tab() ^ (string_of_jlite_expr e)^";"
   in helper_func s
   
 (* display a Jlite variable declaration *)
