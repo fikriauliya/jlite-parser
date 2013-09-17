@@ -2,6 +2,7 @@
 export OCAMLRUNPARAM=''
 
 ocamlc -c interface.ml
+ocamlc -c displayfunc.ml
 
 ocamlyacc -v parser.mly
 ocamlc -c parser.mli
@@ -12,4 +13,4 @@ ocamlc -c lexer.ml
 ocamlc -c parser.ml
 ocamlc -c main.ml
 
-ocamlc -o as1 lexer.cmo parser.cmo main.cmo interface.cmo
+ocamlc -o as1 interface.cmo lexer.cmo parser.cmo displayfunc.cmo main.cmo
