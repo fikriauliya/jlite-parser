@@ -236,7 +236,7 @@ stmt:
     printf "# stmt\n"; 
     AssignFieldStmt (FieldAccess ($1, SimpleVarId $3), $5);
   }
-  | atom OPEN_BRACKET_KEYWORD exp_list CLOSE_BRACKET_KEYWORD { 
+  | atom OPEN_BRACKET_KEYWORD exp_list CLOSE_BRACKET_KEYWORD SEMICOLLON_KEYWORD { 
     printf "# stmt\n"; 
     MdCallStmt (MdCall ($1, $3));
   }
