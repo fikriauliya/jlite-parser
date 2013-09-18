@@ -154,7 +154,7 @@ fml_list:
     [];
   }
   | type_k ID fml_rests { 
-    printf "fml_list\n";
+    printf "# fml_list\n";
     ($1, SimpleVarId $2) :: $3;
   }
 ;
@@ -252,185 +252,185 @@ stmt:
 
 exp:
   b_exp { 
-    printf "exp\n"; 
+    printf "# exp\n"; 
     $1;
   }
   | a_exp { 
-    printf "exp\n";
+    printf "# exp\n";
     $1;
   }
   | s_exp { 
-    printf "exp\n";
+    printf "# exp\n";
     $1;
   }
 ;
 
 b_exp:
   b_exp DISJUNCTION_KEYWORD conj {
-    printf "b_exp\n";
+    printf "# b_exp\n";
     BinaryExp ((BooleanOp "||"), $1, $3);
   }
   | conj {
-    printf "b_exp\n";
+    printf "# b_exp\n";
     $1;
   }
 ;
 
 conj:
   conj CONJUCTION_KEYWORD r_exp {
-    printf "conj\n";
+    printf "# conj\n";
     BinaryExp ((BooleanOp "&&"), $1, $3);
   }
   | r_exp {
-    printf "conj\n";
+    printf "# conj\n";
     $1;
   }
 ;
 
 r_exp:
   a_exp b_op a_exp {
-    printf "r_exp\n";
+    printf "# r_exp\n";
     BinaryExp ($2, $1, $3);
   }
   | b_grd {
-    printf "r_exp\n";
+    printf "# r_exp\n";
     $1;
   }
 ;
 
 b_op: 
   RELATIONAL_OPERATOR {
-    printf "b_op\n"; 
+    printf "# b_op\n"; 
     RelationalOp $1;
   }
 ;
 
 b_grd:
   NEGATION b_grd { 
-    printf "b_grd\n";
+    printf "# b_grd\n";
     UnaryExp ((UnaryOp "!"), $2);
   }
   | BOOLEAN_LITERAL { 
-    printf "b_grd\n";
+    printf "# b_grd\n";
     BoolLiteral $1;
   }
   | atom { 
-    printf "b_grd\n";
+    printf "# b_grd\n";
     $1;
   }
 ;
 
 a_exp:
   a_exp PLUS term {
-    printf "a_exp\n";
+    printf "# a_exp\n";
     BinaryExp ((AritmeticOp "+"), $1, $3);
   }
   | a_exp MINUS term {
-    printf "a_exp\n";
+    printf "# a_exp\n";
     BinaryExp ((AritmeticOp "-"), $1, $3); 
   }
   | term {
-    printf "a_exp\n";
+    printf "# a_exp\n";
     $1;
   }
 ;
 
 term:
   term MULTIPLY ftr {
-    printf "term\n";
+    printf "# term\n";
     BinaryExp ((AritmeticOp "*"), $1, $3);
   }
   | term DIVIDE ftr {
-    printf "term\n";
+    printf "# term\n";
     BinaryExp ((AritmeticOp "/"), $1, $3);
   }
   | ftr {
-    printf "term\n";
+    printf "# term\n";
     $1;
   }
 ;
 
 ftr:
   INTEGER_LITERAL {
-    printf "ftr\n";
+    printf "# ftr\n";
     IntLiteral $1;
   }
   | NEGATIVE ftr {
-    printf "ftr\n";
+    printf "# ftr\n";
     UnaryExp ((UnaryOp "-"), $2);
   }
   | atom {
-    printf "ftr\n";
+    printf "# ftr\n";
     $1;
   }
 ;
 
 s_exp:
   STRING_LITERAL {
-    printf "s_exp\n";
+    printf "# s_exp\n";
     StringLiteral $1;
   }
   | atom {
-    printf "s_exp\n";
+    printf "# s_exp\n";
     $1;
   }
 ;
 
 atom:
   atom DOT_KEYWORD ID {
-    printf "atom\n";
+    printf "# atom\n";
     FieldAccess ($1, (SimpleVarId $3));
   }
   | atom OPEN_BRACKET_KEYWORD exp_list CLOSE_BRACKET_KEYWORD {
-    printf "atom\n";
+    printf "# atom\n";
     MdCall ($1, $3);
   }
   | THIS_KEYWORD {
-    printf "atom\n";
+    printf "# atom\n";
     ThisWord;
   }
   | ID {
-    printf "atom\n";
+    printf "# atom\n";
     Var (SimpleVarId $1);
   }
   | NEW_KEYWORD CNAME {
-    printf "atom\n";
+    printf "# atom\n";
     ObjectCreate $2;
   }
   | OPEN_BRACKET_KEYWORD exp CLOSE_BRACKET_KEYWORD {
-    printf "atom\n";
+    printf "# atom\n";
     $2;
   }
   | NULL_KEYWORD {
-    printf "atom\n";
+    printf "# atom\n";
     NullWord;
   }
 ;
 
 exp_list:
   { 
-    printf "empty exp_list\n";
+    printf "# empty exp_list\n";
     [];
   }
   | exp exp_rests { 
-    printf "exp_list\n";
+    printf "# exp_list\n";
     $1 :: $2;
   }
 ;
 
 exp_rests:
   { 
-    printf "empty exp_rests\n";
+    printf "# empty exp_rests\n";
     [];
   }
   | exp_rests exp_rest { 
-    printf "exp_rests\n";
+    printf "# exp_rests\n";
     $2 :: $1;
   }
 ;
 
 exp_rest: COMMA_KEYWORD exp { 
-    printf "exp_rest\n";
+    printf "# exp_rest\n";
     $2;
   }
 ;

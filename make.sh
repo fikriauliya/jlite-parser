@@ -1,5 +1,5 @@
-# export OCAMLRUNPARAM='p'
 export OCAMLRUNPARAM=''
+# export OCAMLRUNPARAM=''
 
 ocamlc -c interface.ml
 ocamlc -c displayfunc.ml
