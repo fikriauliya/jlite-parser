@@ -16,7 +16,7 @@ let multi_line_comment_end = "*/"
 rule token = parse
   | single_line_comment_start [^ '\n']* '\n' as comment {
       printf "single line comment\n";
-      COMMENT (comment);
+      token lexbuf;
     }
   | multi_line_comment_start {
       printf "multi line comment start\n";
@@ -178,7 +178,7 @@ and comment_token comment = parse
   | multi_line_comment_end  {
       printf "comment: %s\n" comment;
       printf "multi line comment end\n";
-      COMMENT (comment)
+      token lexbuf;
     }
   | _ as c {
       comment_token (comment ^ Char.escaped(c)) lexbuf
