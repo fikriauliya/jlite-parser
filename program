@@ -10,8 +10,9 @@ class Fac {
   function is expected to take in two parameters.)
   Can your compiler optimize it to a tail-recursive function?
   */
+  Int a;
 
-  Int computeFac(Int num) {
+  Int computeFac(Int num, Int a, Bool b, Int c) {
     Int num_aux;
     if (num < 1) { // shouldn't it be num <= 1?
       num_aux = 1 ;
@@ -21,4 +22,17 @@ class Fac {
     }
     return num_aux ;
   }
+
+  Int b;
+  Int c;
+  Int d;
+}
+
+class A {
+}
+
+class B {
+}
+
+class C {
 }

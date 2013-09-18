@@ -66,9 +66,9 @@ class_decls:
     printf "# empty class_decls\n";
     [];
   }
-  | class_decls class_decl { 
+  | class_decl class_decls { 
     printf "# class_decls\n";
-    $2 :: $1;
+    $1 :: $2;
   }
 
 main_class:
@@ -164,9 +164,9 @@ fml_rests:
     printf "# empty fml_rests\n";
     [];
   }
-  | fml_rests fml_rest { 
+  | fml_rest fml_rests { 
     printf "# fml_rests\n"; 
-    $2 :: $1;
+    $1 :: $2;
   }
 ;
 
@@ -204,9 +204,9 @@ stmts:
     printf "# empty stmts\n";
     []
   }
-  | stmts stmt { 
+  | stmt stmts { 
     printf "# stmts\n"; 
-    $2 :: $1;
+    $1 :: $2;
   }
 ;
 
