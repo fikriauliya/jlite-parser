@@ -4,3 +4,8 @@ class Factorial {
     return ;
   }
 }
+class Fac {
+  Int computeFac(Int num) {
+    return num_aux ;
+  }
+}

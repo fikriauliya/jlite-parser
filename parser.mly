@@ -92,10 +92,41 @@ main_class:
 
 class_decl:
   CLASS_KEYWORD CNAME OPEN_CURLY_BRACKET_KEYWORD 
-  var_decls_k md_decls_k CLOSE_CURLY_BRACKET_KEYWORD 
+  class_body CLOSE_CURLY_BRACKET_KEYWORD 
   { 
     printf "# class_decl\n";
-    ($2, $4, $5);
+    let (a, b) = $4 in
+      ($2, a, b);
+  }
+;
+
+class_body:
+  {
+    printf "# empty class_body\n";
+    ([],[])
+  }
+  | type_k ID SEMICOLLON_KEYWORD class_body
+  {
+    printf "# class_body\n";
+    let (cur_var, cur_method) = $4 in
+      let new_var = ($1, SimpleVarId $2) in
+        (new_var::cur_var, cur_method)
+  }
+  | type_k ID OPEN_BRACKET_KEYWORD fml_list CLOSE_BRACKET_KEYWORD md_body class_body
+  {
+    printf "# class_body\n";
+    let (cur_var, cur_method) = $7 in
+      let (localvars_l, stmts_l) = $6
+      and my_rnd = string_of_int (Random.int 100000000) in
+        let res : md_decl = {
+        jliteid = SimpleVarId my_rnd;
+        ir3id = SimpleVarId my_rnd;
+        rettype = $1;
+        params = $4;
+        localvars = localvars_l;
+        stmts = stmts_l;
+      } in 
+        (cur_var, res::cur_method)
   }
 ;
 
@@ -104,44 +135,16 @@ var_decls_k:
     printf "# empty var_decls_k\n";
     []
   }
-  | var_decls_k var_decl_k { 
+  | var_decl_k var_decls_k { 
     printf "# var_decls_k\n";
-    $2 :: $1;
+    $1 :: $2;
   }
 ;
 
 var_decl_k:
-  type_k ID { 
+  type_k ID SEMICOLLON_KEYWORD { 
     printf "#var_decl_k\n";
     ($1, SimpleVarId $2);
-  }
-;
-
-md_decls_k:
-  { 
-    printf "# empty md_decls_k\n";
-    [];
-  }
-  | md_decls_k md_decl_k { 
-    printf "# md_decls_k\n"; 
-    $2 :: $1;
-  }
-;
-
-md_decl_k:
-  type_k ID OPEN_BRACKET_KEYWORD fml_list CLOSE_BRACKET_KEYWORD md_body { 
-    printf "# md_decl_k\n"; 
-
-    let (localvars_l, stmts_l) = $6
-    and my_rnd = string_of_int (Random.int 100000000) in
-      let res : md_decl = {
-        jliteid = SimpleVarId my_rnd;
-        ir3id = SimpleVarId my_rnd;
-        rettype = $1;
-        params = $4;
-        localvars = localvars_l;
-        stmts = stmts_l;
-      } in res
   }
 ;
 
