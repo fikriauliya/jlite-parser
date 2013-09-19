@@ -263,6 +263,10 @@ exp:
     printf "# exp\n";
     $1;
   }
+  | atom { 
+    printf "# exp\n";
+    $1;
+  }
 ;
 
 b_exp:
@@ -300,6 +304,18 @@ r_exp:
     printf "# r_exp\n";
     BinaryExp ($2, $1, $3);
   }
+  | a_exp b_op atom {
+    printf "# r_exp\n";
+    BinaryExp ($2, $1, $3);
+  }
+  | atom b_op a_exp {
+    printf "# r_exp\n";
+    BinaryExp ($2, $1, $3);
+  }
+  | atom b_op atom {
+    printf "# r_exp\n";
+    BinaryExp ($2, $1, $3);
+  }
   | b_grd {
     printf "# r_exp\n";
     $1;
@@ -333,7 +349,15 @@ a_exp:
     printf "# a_exp\n";
     BinaryExp ((AritmeticOp "+"), $1, $3);
   }
+  | atom PLUS term {
+    printf "# a_exp\n";
+    BinaryExp ((AritmeticOp "+"), $1, $3);
+  }
   | a_exp PLUS atom {
+    printf "# a_exp\n";
+    BinaryExp ((AritmeticOp "+"), $1, $3);
+  }
+  | atom PLUS atom {
     printf "# a_exp\n";
     BinaryExp ((AritmeticOp "+"), $1, $3);
   }
@@ -341,7 +365,15 @@ a_exp:
     printf "# a_exp\n";
     BinaryExp ((AritmeticOp "-"), $1, $3); 
   }
+  | atom MINUS term {
+    printf "# a_exp\n";
+    BinaryExp ((AritmeticOp "-"), $1, $3); 
+  }
   | a_exp MINUS atom {
+    printf "# a_exp\n";
+    BinaryExp ((AritmeticOp "-"), $1, $3); 
+  }
+  | atom MINUS atom {
     printf "# a_exp\n";
     BinaryExp ((AritmeticOp "-"), $1, $3); 
   }
@@ -357,6 +389,14 @@ term:
     BinaryExp ((AritmeticOp "*"), $1, $3);
   }
   | term MULTIPLY atom {
+    printf "# term\n";
+    BinaryExp ((AritmeticOp "*"), $1, $3);
+  } 
+  | atom MULTIPLY ftr {
+    printf "# term\n";
+    BinaryExp ((AritmeticOp "*"), $1, $3);
+  }
+  | atom MULTIPLY atom {
     printf "# term\n";
     BinaryExp ((AritmeticOp "*"), $1, $3);
   }
