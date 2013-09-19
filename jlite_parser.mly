@@ -408,6 +408,14 @@ term:
     printf "# term\n";
     BinaryExp ((AritmeticOp "/"), $1, $3);
   }
+  | atom DIVIDE ftr {
+    printf "# term\n";
+    BinaryExp ((AritmeticOp "/"), $1, $3);
+  }
+  | atom DIVIDE atom {
+    printf "# term\n";
+    BinaryExp ((AritmeticOp "/"), $1, $3);
+  }
   | ftr {
     printf "# term\n";
     $1;
