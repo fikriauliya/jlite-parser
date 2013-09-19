@@ -270,6 +270,10 @@ b_exp:
     printf "# b_exp\n";
     BinaryExp ((BooleanOp "||"), $1, $3);
   }
+  | b_exp DISJUNCTION_KEYWORD atom {
+    printf "# b_exp\n";
+    BinaryExp ((BooleanOp "||"), $1, $3);
+  }
   | conj {
     printf "# b_exp\n";
     $1;
@@ -280,6 +284,10 @@ conj:
   conj CONJUCTION_KEYWORD r_exp {
     printf "# conj\n";
     BinaryExp ((BooleanOp "&&"), $1, $3);
+  }
+  | conj CONJUCTION_KEYWORD atom {
+    printf "# conj\n";
+    BinaryExp ((BooleanOp "&&"), $1, $3); 
   }
   | r_exp {
     printf "# conj\n";
@@ -314,9 +322,9 @@ b_grd:
     printf "# b_grd\n";
     BoolLiteral $1;
   }
-  | atom { 
+  | NEGATION atom { 
     printf "# b_grd\n";
-    $1;
+    $2;
   }
 ;
 
@@ -325,7 +333,15 @@ a_exp:
     printf "# a_exp\n";
     BinaryExp ((AritmeticOp "+"), $1, $3);
   }
+  | a_exp PLUS atom {
+    printf "# a_exp\n";
+    BinaryExp ((AritmeticOp "+"), $1, $3);
+  }
   | a_exp MINUS term {
+    printf "# a_exp\n";
+    BinaryExp ((AritmeticOp "-"), $1, $3); 
+  }
+  | a_exp MINUS atom {
     printf "# a_exp\n";
     BinaryExp ((AritmeticOp "-"), $1, $3); 
   }
@@ -340,7 +356,15 @@ term:
     printf "# term\n";
     BinaryExp ((AritmeticOp "*"), $1, $3);
   }
+  | term MULTIPLY atom {
+    printf "# term\n";
+    BinaryExp ((AritmeticOp "*"), $1, $3);
+  }
   | term DIVIDE ftr {
+    printf "# term\n";
+    BinaryExp ((AritmeticOp "/"), $1, $3);
+  }
+  | term DIVIDE atom {
     printf "# term\n";
     BinaryExp ((AritmeticOp "/"), $1, $3);
   }
@@ -359,9 +383,9 @@ ftr:
     printf "# ftr\n";
     UnaryExp ((UnaryOp "-"), $2);
   }
-  | atom {
+  | NEGATIVE atom {
     printf "# ftr\n";
-    $1;
+    UnaryExp ((UnaryOp "-"), $2);
   }
 ;
 
@@ -369,10 +393,6 @@ s_exp:
   STRING_LITERAL {
     printf "# s_exp\n";
     StringLiteral $1;
-  }
-  | atom {
-    printf "# s_exp\n";
-    $1;
   }
 ;
 

@@ -14,7 +14,7 @@ let multi_line_comment_start = "/*"
 let multi_line_comment_end = "*/"
 
 rule token = parse
-  | single_line_comment_start [^ '\n']* '\n' as comment {
+  | single_line_comment_start [^ '\n']* '\n' {
       printf "single line comment\n";
       token lexbuf;
     }
