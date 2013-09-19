@@ -1,6 +1,6 @@
 %{
   open Printf
-  open Interface
+  open Jlite_structs
 
   let parse_error s = (* Called by the parser function on error *)
     print_endline s;
@@ -51,7 +51,7 @@
 %right EXP
 
 %start program
-%type <Interface.jlite_program> program
+%type <Jlite_structs.jlite_program> program
 
 %%
 program:  

@@ -1,6 +1,6 @@
 {
   open Printf
-  open Parser
+  open Jlite_parser
 }
 
 let digit = ['0'-'9']

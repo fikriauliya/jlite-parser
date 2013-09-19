@@ -1,12 +1,13 @@
-open Parser
-open Interface
+open Jlite_parser
+open Jlite_lexer
+open Jlite_structs
 open Printf
 open Displayfunc
 
 let main () =
   try
     let lexbuf = Lexing.from_channel stdin in
-      let program = Parser.program Lexer.token lexbuf in
+      let program = Jlite_parser.program Jlite_lexer.token lexbuf in
         let out_string = Displayfunc.string_of_jlite_program program in
           begin
             printf "===================================================\n";

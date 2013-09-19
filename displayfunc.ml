@@ -11,7 +11,7 @@
 (* Accesing such a type is done through the "match with" construct 
   as can be seen in the code below *)
   
-open Interface
+open Jlite_structs
   
 (* ===================================================== *)
 (*  Functions for printing the AST *)
