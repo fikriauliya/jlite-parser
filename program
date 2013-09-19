@@ -22,3 +22,26 @@ class Fac {
     return num_aux ;
   }
 }
+
+class Person {
+  String name;
+  Int age;
+
+  Void jump() {
+    println("Jump!");
+  }
+}
+
+class Math {
+  Void square(Int x) {
+    return x*x;
+  }
+
+  Void root(Int x) {
+    return sqrt(x);
+  }
+}
+
+class ClassC {
+  
+}
