@@ -1,0 +1,31 @@
+//copy from http://introcs.cs.princeton.edu/java/13flow/Prime.java.html
+
+class Prime {
+    void main(String args) { 
+        Long n;
+        Boolean isPrime;
+        Int i;
+
+        n = parseLong(args);
+        isPrime = true;
+        
+        if (n < 2) {
+            isPrime = false;
+        } else {
+            isPrime = true;
+        }
+
+        i = 2;
+        while (i*i <= n) {
+            i = i + 1;
+            // if i divides evenly into N, N is not prime, so break out of loop
+            if (mod(n, i) == 0) {
+                isPrime = false;
+            } else {
+                //do nothing
+                i = i;
+            }
+        }
+        return isPrime;
+    }
+}

@@ -1,0 +1,33 @@
+//Copy from http://www.cs.uvm.edu/~xwu/Java/SamplePrograms.shtml
+
+class MainClass {
+  void main() {
+    Point point;
+    point = new Point();
+    point.clear();
+    return;
+  }
+}
+
+class Point {
+   Int x;
+   Int y; 
+   
+     // This always refers to an object at (0,0) 
+   Void make(Int x_value, Int y_value) {
+      x = x_value; 
+      y = y_value; 
+   }
+   Void clear() {
+      this.x = 0; 
+      this.y = 0; 
+   }
+   Int distance(Point that) {
+      Int xDiff;
+      Int yDiff;
+
+      xDiff = x - that.x; 
+      yDiff = y - that.y; 
+      return sqrt(xDiff * xDiff + yDiff * yDiff);
+   }
+}
